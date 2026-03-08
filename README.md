@@ -163,6 +163,51 @@ iterations = 1  # First iteration example
 
 # Add intercept term
 X_b = np.c_[np.ones((m,1)), X]
+import numpy as np
+from colorama import Fore, Style, init
+
+# 🎨 Initialize colorama
+init(autoreset=True)
+
+# Dataset
+X = np.array([[2,60],[4,70],[6,80],[8,90]])
+y = np.array([50,65,80,95])
+m = len(y)
+
+# Initial parameters
+theta = np.array([0.0,0.0,0.0])
+alpha = 0.01
+iterations = 1  # First iteration example
+
+# Add intercept term
+X_b = np.c_[np.ones((m,1)), X]
+
+for _ in range(iterations):
+    h = X_b.dot(theta)  # 🔹 Predicted values
+    gradient = (2/m)*X_b.T.dot(h - y)  # 🔹 Compute gradient
+    theta = theta - alpha*gradient  # 🔹 Update parameters
+
+# ------------------- Colorful Outputs -------------------
+
+# ✅ Updated parameters in green
+print(Fore.GREEN + "✅ Updated Parameters (θ₀, θ₁, θ₂):" + Style.RESET_ALL, theta)
+
+# 📊 Predictions in cyan
+predictions = X_b.dot(theta)
+print(Fore.CYAN + "📊 Predictions for existing students:" + Style.RESET_ALL, predictions)
+
+# 📝 Predict new student
+study_new, attendance_new = 5, 75
+marks_new = theta[0] + theta[1]*study_new + theta[2]*attendance_new
+print(Fore.MAGENTA + f"📝 Predicted Marks for Study={study_new}h & Attendance={attendance_new}%:" + Style.RESET_ALL, marks_new)
+
+# ❌ Show errors for each student in red
+errors = predictions - y
+for i, err in enumerate(errors, start=1):
+    print(Fore.RED + f"❌ Student {i} Error:" + Style.RESET_ALL, err)
+
+# 💡 Optional: Highlight observation
+print(Fore.YELLOW + "💡 Note: Attendance has larger scale than Study hours. Feature scaling recommended in real applications." + Style.RESET_ALL)
 
 for _ in range(iterations):
     h = X_b.dot(theta)
